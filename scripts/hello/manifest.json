@@ -1,0 +1,11 @@
+{
+    "command": "hello",
+    "description": "A friendly greeting command",
+    "arguments": [
+        {
+            "name": "name",
+            "description": "The name to greet",
+            "required": false
+        }
+    ]
+}
