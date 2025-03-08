@@ -1,0 +1,15 @@
+{
+    "command": "prisma-migrate-clean",
+    "description": "Run Prisma migrations in a clean Docker environment",
+    "arguments": [
+        {
+            "name": "name",
+            "description": "The name of the migration",
+            "required": true
+        }
+    ],
+    "dependencies": [
+        "docker",
+        "prisma"
+    ]
+}
