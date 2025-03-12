@@ -1,6 +1,6 @@
 {
     "name": "@julienvanbeveren/kit",
-    "version": "2.1.1",
+    "version": "2.1.3",
     "description": "A customizable CLI toolkit",
     "main": "dist/index.js",
     "bin": {
@@ -10,9 +10,10 @@
         "build": "tsc",
         "start": "node dist/index.js",
         "dev": "ts-node src/index.ts",
-        "copy-assets": "for f in $(find scripts -type f ! -name '*.ts'); do mkdir -p dist/$(dirname $f) && cp $f dist/$f; done",
+        "copy-assets": "mkdir -p dist/scripts && cp scripts/postinstall.js dist/scripts/ && for f in $(find scripts -type f ! -name '*.ts' ! -name 'postinstall.js'); do mkdir -p dist/$(dirname $f) && cp $f dist/$f; done",
         "prepare": "npm run build && npm run copy-assets",
-        "pack": "npm run prepare && npm publish --access public"
+        "pack": "npm run prepare && npm publish --access public",
+        "postinstall": "node dist/scripts/postinstall.js"
     },
     "keywords": [
         "cli",
