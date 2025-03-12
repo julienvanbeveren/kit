@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, spawn } = require('child_process');
 const os = require('os');
 
 function getShellConfigFile() {
@@ -36,6 +36,30 @@ function getShellConfigFile() {
     }
 }
 
+function sourceConfig(configFile, shell) {
+    try {
+        const shellExec = process.env.SHELL;
+        if (!shellExec) return;
+
+        // Create a temporary script that sources the config and starts a new shell
+        const tempScript = path.join(os.tmpdir(), 'kit-completion-source.sh');
+        const sourceCmd = shell === 'fish' ? 'source' : '.';
+        fs.writeFileSync(tempScript, `${sourceCmd} "${configFile}"\n`, { mode: 0o755 });
+
+        // Execute the source command in the current shell
+        execSync(`${shellExec} -i "${tempScript}"`, {
+            stdio: 'inherit',
+            shell: true,
+            env: { ...process.env, SOURCING_KIT_COMPLETION: '1' }
+        });
+
+        // Clean up
+        fs.unlinkSync(tempScript);
+    } catch (error) {
+        // Ignore errors during sourcing
+    }
+}
+
 function setupCompletion() {
     try {
         const configFile = getShellConfigFile();
@@ -64,15 +88,30 @@ function setupCompletion() {
             // File doesn't exist, we'll create it
         }
 
-        const sourceLine = shell === 'fish'
-            ? `source ${completionFile}`
-            : `source "${completionFile}"`;
+        let sourceLine;
+        if (shell === 'fish') {
+            sourceLine = `source ${completionFile}`;
+        } else if (shell === 'zsh') {
+            sourceLine = `
+# Kit CLI completion
+fpath=(${path.dirname(completionFile)} $fpath)
+autoload -Uz compinit
+compinit
+source "${completionFile}"`;
+        } else {
+            sourceLine = `source "${completionFile}"`;
+        }
 
         if (!configContent.includes(sourceLine)) {
             const newContent = configContent + '\n' + sourceLine + '\n';
             fs.writeFileSync(configFile, newContent);
             console.log(`✨ Shell completion has been set up for ${shell}!`);
-            console.log(`🔄 Please restart your terminal or run: source "${configFile}" to enable completion`);
+
+            // Source the config file immediately
+            if (!process.env.SOURCING_KIT_COMPLETION) {
+                console.log('🔄 Applying completion settings...');
+                sourceConfig(configFile, shell);
+            }
         } else {
             console.log('✨ Shell completion was already set up!');
         }
@@ -83,7 +122,7 @@ function setupCompletion() {
     }
 }
 
-// Only run in a non-global install
-if (!process.env.npm_config_global) {
+// Only run in a non-global install and when not already sourcing
+if (!process.env.npm_config_global && !process.env.SOURCING_KIT_COMPLETION) {
     setupCompletion();
 } 

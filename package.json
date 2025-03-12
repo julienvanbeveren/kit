@@ -12,8 +12,7 @@
         "dev": "ts-node src/index.ts",
         "copy-assets": "mkdir -p dist/scripts && cp scripts/postinstall.js dist/scripts/ && for f in $(find scripts -type f ! -name '*.ts' ! -name 'postinstall.js'); do mkdir -p dist/$(dirname $f) && cp $f dist/$f; done",
         "prepare": "npm run build && npm run copy-assets",
-        "pack": "npm run prepare && npm publish --access public",
-        "postinstall": "node dist/scripts/postinstall.js"
+        "pack": "npm run prepare && npm publish --access public"
     },
     "keywords": [
         "cli",
