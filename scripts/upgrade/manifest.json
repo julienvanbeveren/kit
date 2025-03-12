@@ -1,0 +1,8 @@
+{
+    "command": "upgrade",
+    "description": "Upgrade Kit to the latest version",
+    "arguments": [],
+    "dependencies": [
+        "npm"
+    ]
+}
