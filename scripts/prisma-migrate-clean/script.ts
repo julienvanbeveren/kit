@@ -7,7 +7,7 @@ function setupTempDirectory(): string {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'prisma-migrate-clean-'));
 
     // Copy Dockerfile from script directory
-    const scriptDir = __dirname;
+    const scriptDir = path.dirname(__filename);
     fs.copyFileSync(path.join(scriptDir, 'Dockerfile'), path.join(tmpDir, 'Dockerfile'));
 
     return tmpDir;

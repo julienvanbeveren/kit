@@ -4,7 +4,7 @@
     "description": "A customizable CLI toolkit",
     "main": "dist/index.js",
     "bin": {
-        "kit": "./dist/index.js"
+        "tristan": "./dist/index.js"
     },
     "scripts": {
         "build": "tsc",
