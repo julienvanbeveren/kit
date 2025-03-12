@@ -1,6 +1,6 @@
 {
     "name": "@julienvanbeveren/kit",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "A customizable CLI toolkit",
     "main": "dist/index.js",
     "bin": {
@@ -10,8 +10,9 @@
         "build": "tsc",
         "start": "node dist/index.js",
         "dev": "ts-node src/index.ts",
-        "prepare": "npm run build",
-        "publish": "npm publish --access public"
+        "copy-assets": "for f in $(find scripts -type f ! -name '*.ts'); do mkdir -p dist/$(dirname $f) && cp $f dist/$f; done",
+        "prepare": "npm run build && npm run copy-assets",
+        "pack": "npm run prepare && npm publish --access public"
     },
     "keywords": [
         "cli",
