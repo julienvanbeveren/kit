@@ -15,8 +15,6 @@ USER root
 COPY . .
 RUN npm install -g prisma
 
-ENV DATABASE_URL="postgresql://prisma:prisma@localhost:5432/prisma_db"
-
 CMD service postgresql start && \
     prisma migrate deploy && \
-    prisma migrate dev --name ${MIGRATION_NAME} 
+    prisma migrate dev --name ${MIGRATION_NAME} --skip-generate
