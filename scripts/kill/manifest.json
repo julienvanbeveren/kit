@@ -1,0 +1,12 @@
+{
+    "command": "kill",
+    "description": "Kill a process running on a specific port",
+    "arguments": [
+        {
+            "name": "port",
+            "description": "The port number of the process to kill",
+            "required": true
+        }
+    ],
+    "dependencies": []
+}
