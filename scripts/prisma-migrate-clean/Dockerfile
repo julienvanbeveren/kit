@@ -13,7 +13,7 @@ RUN /etc/init.d/postgresql start && \
 USER root
 
 COPY . .
-RUN npm install -g prisma
+RUN npm install -g prisma@5.22.0
 
 CMD service postgresql start && \
     prisma migrate deploy && \
