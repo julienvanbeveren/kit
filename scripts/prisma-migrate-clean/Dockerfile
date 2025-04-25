@@ -17,4 +17,4 @@ RUN npm install -g prisma@5.22.0
 
 CMD service postgresql start && \
     prisma migrate deploy && \
-    prisma migrate dev --name ${MIGRATION_NAME} --skip-generate
+    prisma migrate dev --name ${MIGRATION_NAME} --skip-generate --create-only

@@ -1,6 +1,6 @@
 {
     "name": "@julienvanbeveren/kit",
-    "version": "5.0.0",
+    "version": "5.0.1",
     "description": "A customizable CLI toolkit",
     "main": "dist/index.js",
     "bin": {
