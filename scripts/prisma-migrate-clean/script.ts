@@ -67,7 +67,7 @@ export default async function prismaMigrateClean(migrationName: string) {
 
         console.log('Running migrations in clean environment...');
         execSync(
-            `docker run --rm -v ./prisma/migrations:/app/prisma/migrations -e ${envVarName}="postgresql://prisma:prisma@localhost:5432/prisma_db" -e MIGRATION_NAME="${migrationName}" prisma-migrate-clean`,
+            `docker run --rm -it -v ./prisma/migrations:/app/prisma/migrations -e ${envVarName}="postgresql://prisma:prisma@localhost:5432/prisma_db" -e MIGRATION_NAME="${migrationName}" prisma-migrate-clean`,
             { stdio: 'inherit' }
         );
 
